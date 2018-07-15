@@ -16,20 +16,20 @@ int32_t SumInternal::GetCurrent()
 }
 
 
-Sum::Sum() :
+SumWrapper::SumWrapper() :
 	m_ref(0),
 	m_internal(std::make_shared<SumInternal>())
 {
 }
 
-HRESULT STDMETHODCALLTYPE Sum::QueryInterface(REFIID riid, void **ppvObject)
+HRESULT STDMETHODCALLTYPE SumWrapper::QueryInterface(REFIID riid, void **ppvObject)
 {
 	if (ppvObject == nullptr)
 	{
 		return E_POINTER;
 	}
 
-	if (riid == IID_IUnknown && riid == __uuidof(ISum))
+	if (riid == IID_IUnknown || riid == __uuidof(ISum))
 	{
 		AddRef();
 		*ppvObject = static_cast<ISum *>(this);
@@ -38,12 +38,12 @@ HRESULT STDMETHODCALLTYPE Sum::QueryInterface(REFIID riid, void **ppvObject)
 	return E_NOINTERFACE;
 }
 
-ULONG STDMETHODCALLTYPE Sum::AddRef(void)
+ULONG STDMETHODCALLTYPE SumWrapper::AddRef(void)
 {
 	return ++m_ref;
 }
 
-ULONG STDMETHODCALLTYPE Sum::Release(void)
+ULONG STDMETHODCALLTYPE SumWrapper::Release(void)
 {
 	int32_t count = --m_ref;
 	if (count == 0)
@@ -53,12 +53,17 @@ ULONG STDMETHODCALLTYPE Sum::Release(void)
 	return count;
 }
 
-void Sum::Increment(int32_t a)
+HRESULT SumWrapper::GetWeakReference(IWeakReference **weakReference)
+{
+	return E_NOTIMPL;
+}
+
+void SumWrapper::Increment(int32_t a)
 {
 	m_internal->Increment(a);
 }
 
-int32_t Sum::GetCurrent()
+int32_t SumWrapper::GetCurrent()
 {
 	return m_internal->GetCurrent();
 }
