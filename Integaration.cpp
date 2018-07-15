@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "Integaration.h"
-#include <atlcomcli.h>
+#include <comdef.h>
+
+template<class Intf>
+using ComPtr = _com_ptr_t<_com_IIID<Intf, &__uuidof(Intf)>>;
 
 Sum::Sum() :
 	m_ref(0),
@@ -61,8 +64,8 @@ HRESULT Sum::GetWeakReference(IWeakReference **weakReference)
 	{
 		return E_NOINTERFACE;
 	}
-	CComPtr<IWeakReference> ret = new WeakReference(shared_from_this());
-	return ret.CopyTo(weakReference);
+	ComPtr<IWeakReference> ret = new WeakReference(shared_from_this());
+	return ret.QueryInterface(IID_PPV_ARGS(weakReference));
 }
 
 void Sum::Increment(int32_t a)
