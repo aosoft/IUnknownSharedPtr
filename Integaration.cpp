@@ -62,7 +62,7 @@ HRESULT Sum::GetWeakReference(IWeakReference **weakReference)
 {
 	if (weakReference == nullptr)
 	{
-		return E_NOINTERFACE;
+		return E_POINTER;
 	}
 	ComPtr<IWeakReference> ret = new WeakReference(shared_from_this());
 	return ret.QueryInterface(IID_PPV_ARGS(weakReference));
