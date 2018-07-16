@@ -37,7 +37,7 @@ private:
 	std::weak_ptr<Sum> m_weak;
 
 public:
-	WeakReference(std::shared_ptr<Sum> const& sharedThis);
+	WeakReference(std::weak_ptr<Sum> const& sharedThis);
 
 	virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void **ppvObject) override;
 	virtual ULONG STDMETHODCALLTYPE AddRef(void) override;

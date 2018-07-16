@@ -64,7 +64,7 @@ HRESULT Sum::GetWeakReference(IWeakReference **weakReference)
 	{
 		return E_POINTER;
 	}
-	ComPtr<IWeakReference> ret = new WeakReference(shared_from_this());
+	ComPtr<IWeakReference> ret = new WeakReference(weak_from_this());
 	return ret.QueryInterface(IID_PPV_ARGS(weakReference));
 }
 
@@ -79,9 +79,9 @@ int32_t Sum::GetCurrent()
 }
 
 
-WeakReference::WeakReference(std::shared_ptr<Sum> const& sharedThis) :
+WeakReference::WeakReference(std::weak_ptr<Sum> const& weakThis) :
 	m_ref(0),
-	m_weak(sharedThis)
+	m_weak(weakThis)
 {
 }
 
