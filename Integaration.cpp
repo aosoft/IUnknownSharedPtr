@@ -43,7 +43,7 @@ ULONG STDMETHODCALLTYPE Sum::AddRef(void)
 	int32_t count = ++m_ref;
 	if (count == 1)
 	{
-		m_sharedThis = shared_from_this();
+		m_sharedThis = weak_from_this().lock();
 	}
 	return count;
 }
